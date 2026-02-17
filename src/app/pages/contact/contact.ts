@@ -4,11 +4,11 @@ import { Header } from '../../shared/header/header';
 import { Footer } from '../../shared/footer/footer';
 
 @Component({
-  selector: 'app-shop',
+  selector: 'app-contact',
   imports: [CommonModule, Header, Footer],
-  templateUrl: './shop.html',
-  styleUrl: './shop.scss',
+  templateUrl: './contact.html',
+  styleUrl: './contact.scss',
 })
-export class Shop {
+export class Contact {
   // All theme initialization is handled by the Header component
 }
