@@ -1,0 +1,637 @@
+{
+  "categories": [
+    {
+      "id": "men",
+      "name": "Men",
+      "count": 20
+    },
+    {
+      "id": "women",
+      "name": "Women",
+      "count": 20
+    },
+    {
+      "id": "bags",
+      "name": "Bags",
+      "count": 20
+    },
+    {
+      "id": "clothing",
+      "name": "Clothing",
+      "count": 20
+    },
+    {
+      "id": "shoes",
+      "name": "Shoes",
+      "count": 20
+    },
+    {
+      "id": "accessories",
+      "name": "Accessories",
+      "count": 20
+    },
+    {
+      "id": "kids",
+      "name": "Kids",
+      "count": 20
+    },
+    {
+      "id": "perfumes",
+      "name": "Perfumes",
+      "count": 0
+    }
+  ],
+  "brands": [
+    {
+      "id": "louis-vuitton",
+      "name": "Louis Vuitton"
+    },
+    {
+      "id": "chanel",
+      "name": "Chanel"
+    },
+    {
+      "id": "hermes",
+      "name": "Hermes"
+    },
+    {
+      "id": "gucci",
+      "name": "Gucci"
+    }
+  ],
+  "sizes": ["xs", "s", "m", "l", "xl", "xxl", "2xl", "3xl", "4xl"],
+  "colors": [
+    {
+      "id": "color-1",
+      "name": "White",
+      "class": "c-1",
+      "hex": "#ffffff"
+    },
+    {
+      "id": "color-2",
+      "name": "Black",
+      "class": "c-2",
+      "hex": "#000000"
+    },
+    {
+      "id": "color-3",
+      "name": "Grey",
+      "class": "c-3",
+      "hex": "#808080"
+    },
+    {
+      "id": "color-4",
+      "name": "Red",
+      "class": "c-4",
+      "hex": "#ff0000"
+    },
+    {
+      "id": "color-5",
+      "name": "Blue",
+      "class": "c-5",
+      "hex": "#0000ff"
+    },
+    {
+      "id": "color-6",
+      "name": "Green",
+      "class": "c-6",
+      "hex": "#008000"
+    },
+    {
+      "id": "color-7",
+      "name": "Yellow",
+      "class": "c-7",
+      "hex": "#ffff00"
+    },
+    {
+      "id": "color-8",
+      "name": "Pink",
+      "class": "c-8",
+      "hex": "#ffc0cb"
+    },
+    {
+      "id": "color-9",
+      "name": "Brown",
+      "class": "c-9",
+      "hex": "#8b4513"
+    }
+  ],
+  "tags": [
+    "Product",
+    "Bags",
+    "Shoes",
+    "Fashion",
+    "Clothing",
+    "Hats",
+    "Accessories",
+    "New",
+    "Sale",
+    "Trending"
+  ],
+  "priceRanges": [
+    {
+      "id": "range-1",
+      "label": "$0.00 - $50.00",
+      "min": 0,
+      "max": 50
+    },
+    {
+      "id": "range-2",
+      "label": "$50.00 - $100.00",
+      "min": 50,
+      "max": 100
+    },
+    {
+      "id": "range-3",
+      "label": "$100.00 - $150.00",
+      "min": 100,
+      "max": 150
+    },
+    {
+      "id": "range-4",
+      "label": "$150.00 - $200.00",
+      "min": 150,
+      "max": 200
+    },
+    {
+      "id": "range-5",
+      "label": "$200.00 - $250.00",
+      "min": 200,
+      "max": 250
+    },
+    {
+      "id": "range-6",
+      "label": "$250.00+",
+      "min": 250,
+      "max": 99999
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "uuid": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "sku": "3812901",
+      "name": "Buttons tweed blazer",
+      "slug": "buttons-tweed-blazer",
+      "description": "Elegant tweed blazer with classic button detailing. Features a tailored fit and sophisticated design perfect for both casual and formal occasions.",
+      "shortDescription": "Classic tweed blazer with button details",
+      "price": 310.00,
+      "originalPrice": 310.00,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "gucci",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Fashion", "Clothing", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-1.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-1.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 50,
+      "featured": false,
+      "newArrival": true,
+      "hotSale": false,
+      "bestSeller": false,
+      "material": "Tweed, Cotton blend",
+      "additionalInfo": "Dry clean only. Imported.",
+      "relatedProducts": [2, 4, 7]
+    },
+    {
+      "id": 2,
+      "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "sku": "3812902",
+      "name": "Piqué Biker Jacket",
+      "slug": "pique-biker-jacket",
+      "description": "Modern biker jacket crafted from premium piqué fabric. Features zippered details, adjustable cuffs, and a sleek contemporary design that combines style with functionality.",
+      "shortDescription": "Modern piqué fabric biker jacket",
+      "price": 67.24,
+      "originalPrice": 67.24,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "hermes",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Fashion", "Clothing", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-2.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-2.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 30,
+      "featured": true,
+      "newArrival": false,
+      "hotSale": false,
+      "bestSeller": true,
+      "material": "Piqué fabric, Polyester blend",
+      "additionalInfo": "Machine washable. Imported.",
+      "relatedProducts": [1, 5, 9]
+    },
+    {
+      "id": 3,
+      "uuid": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "sku": "3812903",
+      "name": "Multi-pocket Chest Bag",
+      "slug": "multi-pocket-chest-bag",
+      "description": "Versatile chest bag featuring multiple pockets for organized storage. Perfect for outdoor activities and urban adventures. Water-resistant material ensures protection for your belongings.",
+      "shortDescription": "Versatile multi-pocket chest bag",
+      "price": 43.48,
+      "originalPrice": 55.00,
+      "sale": true,
+      "salePercentage": 21,
+      "brand": "louis-vuitton",
+      "categoryId": ["bags", "accessories", "men"],
+      "tags": ["Bags", "Accessories", "Sale"],
+      "images": [
+        "/assets/theme/img/product/product-3.jpg",
+        "/assets/theme/img/product/product-10.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-3.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["one-size"],
+      "rating": 4,
+      "reviewCount": 12,
+      "stock": 45,
+      "featured": true,
+      "newArrival": true,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Water-resistant nylon, Leather accents",
+      "additionalInfo": "Adjustable strap. Wipe clean.",
+      "relatedProducts": [8, 11]
+    },
+    {
+      "id": 4,
+      "uuid": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+      "sku": "3812904",
+      "name": "Diagonal Textured Cap",
+      "slug": "diagonal-textured-cap",
+      "description": "Contemporary cap with unique diagonal texture pattern. Features adjustable back strap and breathable fabric construction for all-day comfort.",
+      "shortDescription": "Textured cap with diagonal pattern",
+      "price": 60.90,
+      "originalPrice": 60.90,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "gucci",
+      "categoryId": ["accessories", "men"],
+      "tags": ["Accessories", "Hats", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-4.jpg",
+        "/assets/theme/img/product/product-11.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-4.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["one-size"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 60,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Cotton, Polyester blend",
+      "additionalInfo": "Adjustable strap. Machine washable.",
+      "relatedProducts": [8]
+    },
+    {
+      "id": 5,
+      "uuid": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+      "sku": "3812905",
+      "name": "Wool plain weave",
+      "slug": "wool-plain-weave",
+      "description": "Luxurious wool garment with classic plain weave construction. Soft, warm, and breathable for ultimate comfort in cooler weather.",
+      "shortDescription": "Classic wool plain weave garment",
+      "price": 410.00,
+      "originalPrice": 410.00,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "hermes",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Clothing", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-5.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-5.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl", "xxl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 25,
+      "featured": true,
+      "newArrival": true,
+      "hotSale": false,
+      "bestSeller": false,
+      "material": "100% Merino Wool",
+      "additionalInfo": "Dry clean only. Made in Italy.",
+      "relatedProducts": [1, 2, 7]
+    },
+    {
+      "id": 6,
+      "uuid": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
+      "sku": "3812906",
+      "name": "Ankle Boots",
+      "slug": "ankle-boots",
+      "description": "Stylish ankle boots crafted from premium leather. Features cushioned insole, durable rubber outsole, and versatile design suitable for any occasion.",
+      "shortDescription": "Premium leather ankle boots",
+      "price": 98.49,
+      "originalPrice": 130.00,
+      "sale": true,
+      "salePercentage": 24,
+      "brand": "chanel",
+      "categoryId": ["shoes", "men", "women"],
+      "tags": ["Shoes", "Fashion", "Sale"],
+      "images": [
+        "/assets/theme/img/product/product-6.jpg",
+        "/assets/theme/img/product/product-12.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-6.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["39", "40", "41", "42", "43", "44"],
+      "rating": 4,
+      "reviewCount": 8,
+      "stock": 35,
+      "featured": true,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": true,
+      "material": "Genuine leather, Rubber sole",
+      "additionalInfo": "Wipe with damp cloth. Imported.",
+      "relatedProducts": [4, 8]
+    },
+    {
+      "id": 7,
+      "uuid": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
+      "sku": "3812907",
+      "name": "Sleek wool coat",
+      "slug": "sleek-wool-coat",
+      "description": "Sophisticated wool coat with sleek silhouette. Features full-length design, side pockets, and button closure. Perfect for formal occasions and cold weather.",
+      "shortDescription": "Sophisticated sleek wool coat",
+      "price": 109.00,
+      "originalPrice": 109.00,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "gucci",
+      "categoryId": ["clothing", "men", "women"],
+      "tags": ["Clothing", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-7.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-7.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 20,
+      "featured": false,
+      "newArrival": true,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Wool blend, Polyester lining",
+      "additionalInfo": "Dry clean only. Imported.",
+      "relatedProducts": [1, 5, 9]
+    },
+    {
+      "id": 8,
+      "uuid": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
+      "sku": "3812908",
+      "name": "Basic Flowing Scarf",
+      "slug": "basic-flowing-scarf",
+      "description": "Lightweight flowing scarf in soft, breathable fabric. Versatile accessory that complements any outfit. Available in multiple colors.",
+      "shortDescription": "Lightweight flowing scarf",
+      "price": 26.28,
+      "originalPrice": 26.28,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "hermes",
+      "categoryId": ["accessories", "men", "women"],
+      "tags": ["Accessories", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-8.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-8.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["one-size"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 75,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Silk blend",
+      "additionalInfo": "Hand wash only. Imported.",
+      "relatedProducts": [4, 6]
+    },
+    {
+      "id": 9,
+      "uuid": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+      "sku": "3812909",
+      "name": "Wool knitted sweater",
+      "slug": "wool-knitted-sweater",
+      "description": "Cozy wool knitted sweater with classic crew neck design. Soft, warm knit provides excellent insulation while remaining breathable.",
+      "shortDescription": "Cozy wool knitted sweater",
+      "price": 215.00,
+      "originalPrice": 215.00,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "chanel",
+      "categoryId": ["clothing", "men", "women"],
+      "tags": ["Clothing", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-2.jpg",
+        "/assets/theme/img/product/product-9.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-2.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 40,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": true,
+      "material": "Wool, Cotton blend",
+      "additionalInfo": "Hand wash cold. Lay flat to dry.",
+      "relatedProducts": [1, 2, 5]
+    },
+    {
+      "id": 10,
+      "uuid": "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a",
+      "sku": "3812910",
+      "name": "Lightly Jahrhunderts",
+      "slug": "lightly-jahrhunderts",
+      "description": "Contemporary lightweight jacket with modern design elements. Features adjustable waist, multiple pockets, and water-resistant finish.",
+      "shortDescription": "Lightweight contemporary jacket",
+      "price": 319.00,
+      "originalPrice": 319.00,
+      "sale": true,
+      "salePercentage": 0,
+      "brand": "louis-vuitton",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Clothing", "Fashion", "Sale"],
+      "images": [
+        "/assets/theme/img/product/product-3.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-3.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 28,
+      "featured": false,
+      "newArrival": true,
+      "hotSale": false,
+      "bestSeller": false,
+      "material": "Polyester, Nylon blend",
+      "additionalInfo": "Machine washable. Water-resistant.",
+      "relatedProducts": [2, 7]
+    },
+    {
+      "id": 11,
+      "uuid": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b",
+      "sku": "3812911",
+      "name": "Lightly Jacket",
+      "slug": "lightly-jacket",
+      "description": "Versatile lightweight jacket ideal for transitional weather. Features zip closure, side pockets, and contemporary fit.",
+      "shortDescription": "Versatile lightweight jacket",
+      "price": 309.00,
+      "originalPrice": 380.00,
+      "sale": true,
+      "salePercentage": 19,
+      "brand": "gucci",
+      "categoryId": ["clothing", "men", "women"],
+      "tags": ["Clothing", "Fashion", "Sale"],
+      "images": [
+        "/assets/theme/img/product/product-6.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-6.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 32,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Nylon, Cotton blend",
+      "additionalInfo": "Machine washable. Imported.",
+      "relatedProducts": [2, 7, 10]
+    },
+    {
+      "id": 12,
+      "uuid": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
+      "sku": "3812912",
+      "name": "Hooded thermal anorak",
+      "slug": "hooded-thermal-anorak",
+      "description": "Coat with quilted lining and an adjustable hood. Featuring long sleeves with adjustable cuff tabs, adjustable asymmetric hem with elastic side tabs and a front zip fastening with placket.",
+      "shortDescription": "Thermal anorak with quilted lining",
+      "price": 270.00,
+      "originalPrice": 370.00,
+      "sale": true,
+      "salePercentage": 27,
+      "brand": "chanel",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Clothing", "Fashion", "Sale"],
+      "images": [
+        "/assets/theme/img/shop-details/product-big-2.png",
+        "/assets/theme/img/shop-details/product-big-3.png",
+        "/assets/theme/img/shop-details/product-big.png",
+        "/assets/theme/img/shop-details/product-big-4.png"
+      ],
+      "thumbnails": [
+        "/assets/theme/img/shop-details/thumb-1.png",
+        "/assets/theme/img/shop-details/thumb-2.png",
+        "/assets/theme/img/shop-details/thumb-3.png",
+        "/assets/theme/img/shop-details/thumb-4.png"
+      ],
+      "thumbnail": "/assets/theme/img/shop-details/thumb-1.png",
+      "colors": ["color-1", "color-2", "color-3", "color-4", "color-9"],
+      "sizes": ["s", "l", "xl", "xxl"],
+      "rating": 4,
+      "reviewCount": 5,
+      "stock": 18,
+      "featured": true,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": true,
+      "material": "Polyester quilted lining, Water-resistant outer shell",
+      "additionalInfo": "Machine washable. Adjustable hood and cuffs. Asymmetric hem design.",
+      "videoUrl": "https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1",
+      "detailedDescription": {
+        "productsInfo": "A Pocket PC is a handheld computer, which features many of the same characteristics of a standard laptop computer, but it is generally smaller in size. Pocket PCs are often accompanied with specific software to operate the unit and must feature a touchscreen and touchpad. As is the case with any new technology product, the cost of a Pocket PC is relatively high, this is due to the latest technology being used in its construction. However, the price is gradually decreasing as newer models are being released, and the technology becomes more commonplace, therefore more reasonable now that the newness is wearing off. For approximately $350.00, a new Pocket PC can now be purchased.",
+        "materialUsed": "Polyester is deemed lower quality due to its none natural quality's. Made from synthetic fibers, polyester is often a byproduct of oil and gas production. It is a low cost fabric, making it popular with manufacturers especially for producing home furnishings. Velvet is a very soft, smooth and luxurious looking fabric. It is also breathable. Velvet is a great choice for dinner party jacket and can be worn all year round."
+      },
+      "relatedProducts": [1, 2, 7, 10]
+    },
+    {
+      "id": 13,
+      "uuid": "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d",
+      "sku": "3812913",
+      "name": "Lightly Sweater",
+      "slug": "lightly-sweater",
+      "description": "Comfortable lightweight sweater perfect for layering. Features ribbed cuffs and hem, crew neck design, and soft knit fabric.",
+      "shortDescription": "Comfortable lightweight sweater",
+      "price": 319.00,
+      "originalPrice": 319.00,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "hermes",
+      "categoryId": ["clothing", "men", "women"],
+      "tags": ["Clothing", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-8.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-8.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 45,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": true,
+      "bestSeller": false,
+      "material": "Cotton, Acrylic blend",
+      "additionalInfo": "Machine washable. Tumble dry low.",
+      "relatedProducts": [9, 5]
+    },
+    {
+      "id": 14,
+      "uuid": "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e",
+      "sku": "3812914",
+      "name": "T-shirt Contrast Pocket",
+      "slug": "tshirt-contrast-pocket",
+      "description": "Casual t-shirt featuring contrasting pocket detail. Made from soft, breathable cotton for all-day comfort. Modern fit with crew neck.",
+      "shortDescription": "Casual t-shirt with contrast pocket",
+      "price": 49.66,
+      "originalPrice": 49.66,
+      "sale": false,
+      "salePercentage": 0,
+      "brand": "gucci",
+      "categoryId": ["clothing", "men"],
+      "tags": ["Clothing", "Fashion", "Product"],
+      "images": [
+        "/assets/theme/img/product/product-7.jpg"
+      ],
+      "thumbnail": "/assets/theme/img/product/product-7.jpg",
+      "colors": ["color-1", "color-2", "color-3"],
+      "sizes": ["s", "m", "l", "xl", "xxl"],
+      "rating": 0,
+      "reviewCount": 0,
+      "stock": 80,
+      "featured": false,
+      "newArrival": false,
+      "hotSale": false,
+      "bestSeller": true,
+      "material": "100% Cotton",
+      "additionalInfo": "Machine washable. Preshrunk.",
+      "relatedProducts": [9, 13]
+    }
+  ]
+}

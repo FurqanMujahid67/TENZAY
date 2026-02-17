@@ -1,0 +1,34 @@
+// Shop page specific styles
+
+// Active state for filter items
+.shop__sidebar__categories,
+.shop__sidebar__brand,
+.shop__sidebar__price {
+  ul li a.active {
+    color: #ca1515;
+    font-weight: 600;
+  }
+}
+
+// Active state for tags
+.shop__sidebar__tags {
+  a.active {
+    background: #ca1515;
+    color: #ffffff !important;
+    font-weight: 600;
+  }
+}
+
+// Active state for size filters
+.shop__sidebar__size {
+  label.active {
+    background: #ca1515;
+    color: #ffffff;
+  }
+}
+
+// Loading spinner animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

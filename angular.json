@@ -33,6 +33,11 @@
                 "glob": "**/*",
                 "input": "src/assets/theme",
                 "output": "assets/theme"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/json",
+                "output": "assets/json"
               }
             ],
             "styles": [
