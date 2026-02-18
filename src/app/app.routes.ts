@@ -19,7 +19,7 @@ export const routes: Routes = [
     component: Shop,
   },
   {
-    path: 'shop-details/:id',
+    path: 'shop-details/:idOrUuid',
     component: ShopDetails,
   },
   {

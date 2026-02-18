@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, map, shareReplay } from 'rxjs';
-import { ProductData, Product, ProductFilters, SortOption } from '../models/product.model';
+import { ProductData, Product, ProductFilters, SortOption } from '../models/shop.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ShopService {
   private readonly API_URL = 'assets/json/shop.json';
   private productData$: Observable<ProductData>;
   private cartSubject = new BehaviorSubject<Product[]>([]);
@@ -41,6 +41,19 @@ export class ProductService {
   getProductById(id: number): Observable<Product | undefined> {
     return this.productData$.pipe(
       map(data => data.products.find(p => p.id === id))
+    );
+  }
+
+  /**
+   * Get product by ID or UUID
+   */
+  getProductByIdOrUuid(idOrUuid: number | string): Observable<Product | undefined> {
+    const idAsString = String(idOrUuid).trim();
+    const numericId = Number(idAsString);
+    const isNumericId = Number.isFinite(numericId) && String(numericId) === idAsString;
+
+    return this.productData$.pipe(
+      map(data => data.products.find(p => (isNumericId && p.id === numericId) || p.uuid === idAsString))
     );
   }
 

@@ -12,12 +12,12 @@
                             <h2>Fall - Winter Collections 2030</h2>
                             <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                             commitment to exceptional quality.</p>
-                            <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                            <a routerLink="/shop" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
                                 <a href="#"><i class="fa fa-pinterest"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="https://www.instagram.com/tenzay.online?igsh=MXcybWJveDk4ZjJpag==" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
@@ -33,12 +33,12 @@
                             <h2>Fall - Winter Collections 2030</h2>
                             <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                             commitment to exceptional quality.</p>
-                            <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                            <a routerLink="/shop" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
                                 <a href="#"><i class="fa fa-pinterest"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="https://www.instagram.com/tenzay.online?igsh=MXcybWJveDk4ZjJpag==" target="_blank" rel="noopener noreferrer"><i class="fa fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Clothing Collections 2030</h2>
-                        <a href="#">Shop now</a>
+                        <a routerLink="/shop">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Accessories</h2>
-                        <a href="#">Shop now</a>
+                        <a routerLink="/shop">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Shoes Spring 2030</h2>
-                        <a href="#">Shop now</a>
+                        <a routerLink="/shop">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -97,135 +97,101 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="filter__controls">
-                    <li class="active" data-filter="*">Best Sellers</li>
-                    <li data-filter=".new-arrivals">New Arrivals</li>
+                    <li class="active" data-filter="*">Featured</li>
+                    <li data-filter=".best-sellers">Best Sellers</li>
                     <li data-filter=".hot-sales">Hot Sales</li>
                 </ul>
             </div>
         </div>
-        <div class="row product__filter">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-1.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
+        <div class="row product__filter" *ngIf="!isLoading">
+            <div *ngFor="let product of topFeatured" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix featured">
+                <div class="product__item" [class.sale]="product.sale">
+                    <div class="product__item__pic" 
+                         [style.background-image]="'url(' + product.thumbnail + ')'"
+                         [style.background-size]="'cover'"
+                         [style.background-position]="'center center'"
+                         [style.background-repeat]="'no-repeat'">
+                        <span *ngIf="product.sale" class="label">Sale</span>
+                        <ul class="product__hover">
+                            <!-- <li><a href="#"><i class="icon_heart_alt"></i></a></li>
+                            <li><a href="#"><i class="icon_refresh"></i> <span>Compare</span></a></li> -->
+                            <!-- <li><a href="#"><i class="icon_search"></i></a></li> -->
+                            <li><a [routerLink]="['/shop-details', product.uuid]"><i class="icon_info_alt"></i> <span>Detail</span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Buttons tweed blazer</a></h6>
-                        <h5>$310</h5>
+                        <h6><a [routerLink]="['/shop-details', product.uuid]">{{ product.name }}</a></h6>
+                        <h5>
+                            ${{ product.price.toFixed(2) }}
+                            <span *ngIf="product.sale" style="text-decoration: line-through; color: #999; margin-left: 10px;">
+                                ${{ product.originalPrice.toFixed(2) }}
+                            </span>
+                        </h5>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-2.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
+            <div *ngFor="let product of topBestSellers" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix best-sellers">
+                <div class="product__item" [class.sale]="product.sale">
+                    <div class="product__item__pic" 
+                         [style.background-image]="'url(' + product.thumbnail + ')'"
+                         [style.background-size]="'cover'"
+                         [style.background-position]="'center center'"
+                         [style.background-repeat]="'no-repeat'">
+                        <span *ngIf="product.sale" class="label">Sale</span>
+                        <ul class="product__hover">
+                            <!-- <li><a href="#"><i class="icon_heart_alt"></i></a></li>
+                            <li><a href="#"><i class="icon_refresh"></i> <span>Compare</span></a></li> -->
+                            <!-- <li><a href="#"><i class="icon_search"></i></a></li> -->
+                            <li><a [routerLink]="['/shop-details', product.uuid]"><i class="icon_info_alt"></i> <span>Detail</span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Wool knitted sweater</a></h6>
-                        <h5>$215</h5>
+                        <h6><a [routerLink]="['/shop-details', product.uuid]">{{ product.name }}</a></h6>
+                        <h5>
+                            ${{ product.price.toFixed(2) }}
+                            <span *ngIf="product.sale" style="text-decoration: line-through; color: #999; margin-left: 10px;">
+                                ${{ product.originalPrice.toFixed(2) }}
+                            </span>
+                        </h5>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-3.jpg">
-                        <p class="sale__price">Sale</p>
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
+            <div *ngFor="let product of topHotSales" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
+                <div class="product__item" [class.sale]="product.sale">
+                    <div class="product__item__pic" 
+                         [style.background-image]="'url(' + product.thumbnail + ')'"
+                         [style.background-size]="'cover'"
+                         [style.background-position]="'center center'"
+                         [style.background-repeat]="'no-repeat'">
+                        <span *ngIf="product.sale" class="label">Sale</span>
+                        <ul class="product__hover">
+                            <!-- <li><a href="#"><i class="icon_heart_alt"></i></a></li>
+                            <li><a href="#"><i class="icon_refresh"></i> <span>Compare</span></a></li> -->
+                            <!-- <li><a href="#"><i class="icon_search"></i></a></li> -->
+                            <li><a [routerLink]="['/shop-details', product.uuid]"><i class="icon_info_alt"></i> <span>Detail</span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6><a href="#">Lightly Jahrhunderts</a></h6>
-                        <h5>$319</h5>
+                        <h6><a [routerLink]="['/shop-details', product.uuid]">{{ product.name }}</a></h6>
+                        <h5>
+                            ${{ product.price.toFixed(2) }}
+                            <span *ngIf="product.sale" style="text-decoration: line-through; color: #999; margin-left: 10px;">
+                                ${{ product.originalPrice.toFixed(2) }}
+                            </span>
+                        </h5>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-4.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Sleek wool coat</a></h6>
-                        <h5>$109</h5>
-                    </div>
+        </div>
+        <div class="row" *ngIf="isLoading">
+            <div class="col-lg-12">
+                <div style="text-align: center; padding: 60px 20px;">
+                    <p style="color: #666; font-size: 16px;">Loading top products...</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-5.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Wool plain weave</a></h6>
-                        <h5>$410</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-6.jpg">
-                        <p class="sale__price">Sale</p>
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Lightly Jacket</a></h6>
-                        <h5>$309</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-7.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Sleek wool coat</a></h6>
-                        <h5>$309</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="assets/theme/img/product/product-8.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Lightly Sweater</a></h6>
-                        <h5>$319</h5>
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div class="home__cta">
+            <a routerLink="/shop" class="home__cta__btn">Shop the Collection <span class="arrow_right"></span></a>
         </div>
     </div>
 </section>
@@ -292,9 +258,13 @@
             </div>
             <div class="col-lg-4">
                 <div class="instagram__text">
-                    <h2>Instagram</h2>
+                    <h2>
+                        <a href="https://www.instagram.com/tenzay.online?igsh=MXcybWJveDk4ZjJpag==" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    </h2>
                     <p>Get free style advice and outfit ideas from expert stylists, all personalized to your lifestyle and goals.</p>
-                    <h3>#Male-Fashion</h3>
+                    <h3>
+                        <a href="https://www.instagram.com/tenzay.online?igsh=MXcybWJveDk4ZjJpag==" target="_blank" rel="noopener noreferrer">#Fashion</a>
+                    </h3>
                 </div>
             </div>
         </div>
@@ -314,39 +284,20 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
+            <div *ngFor="let product of topBlogProducts" class="col-lg-4 col-md-6 col-sm-6">
                 <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="assets/theme/img/blog/blog-1.jpg"></div>
-                    <div class="blog__item__text">
-                        <span class="icon_calendar"></span>
-                        <a href="#">
-                            <h5>Contrary to popular belief, when our the new line fashion week</h5>
-                        </a>
-                        <a href="#" class="blog__btn">Read More <span class="arrow_right"></span></a>
+                    <div class="blog__item__pic set-bg"
+                         [style.background-image]="'url(' + product.thumbnail + ')'"
+                         [style.background-size]="'cover'"
+                         [style.background-position]="'center center'">
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="assets/theme/img/blog/blog-2.jpg"></div>
                     <div class="blog__item__text">
                         <span class="icon_calendar"></span>
-                        <a href="#">
-                            <h5>The best new fashion week street style looks and outfits</h5>
+                        <a [routerLink]="['/shop-details', product.uuid]">
+                            <h5>{{ product.name }}</h5>
                         </a>
-                        <a href="#" class="blog__btn">Read More <span class="arrow_right"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="assets/theme/img/blog/blog-3.jpg"></div>
-                    <div class="blog__item__text">
-                        <span class="icon_calendar"></span>
-                        <a href="#">
-                            <h5>Best Celebrities Outfits & Looks On The Red Carpet & Street</h5>
-                        </a>
-                        <a href="#" class="blog__btn">Read More <span class="arrow_right"></span></a>
+                        <p>{{ product.shortDescription }}</p>
+                        <a [routerLink]="['/shop-details', product.uuid]" class="blog__btn">Read More <span class="arrow_right"></span></a>
                     </div>
                 </div>
             </div>

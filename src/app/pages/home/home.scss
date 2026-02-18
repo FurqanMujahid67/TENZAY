@@ -1,0 +1,33 @@
+/* Home page custom styles */
+
+.home__cta {
+	text-align: center;
+	margin-top: 35px;
+}
+
+.home__cta__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 14px 34px;
+	background: linear-gradient(135deg, #111111 0%, #2a2a2a 100%);
+	color: #ffffff;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 13px;
+	font-weight: 700;
+	border-radius: 999px;
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+	transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.home__cta__btn .arrow_right {
+	font-size: 12px;
+}
+
+.home__cta__btn:hover {
+	color: #ffffff;
+	transform: translateY(-2px);
+	box-shadow: 0 16px 30px rgba(0, 0, 0, 0.28);
+	background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%);
+}

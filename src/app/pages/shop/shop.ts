@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Header } from '../../shared/header/header';
 import { Footer } from '../../shared/footer/footer';
-import { ProductService } from '../../services/product.service';
-import { Product, ProductData, Category, Brand, PriceRange, Color } from '../../models/product.model';
+import { ShopService } from '../../services/shop.service';
+import { Product, ProductData, Category, Brand, PriceRange, Color } from '../../models/shop.model';
 
 @Component({
   selector: 'app-shop',
@@ -45,7 +45,7 @@ export class Shop implements OnInit {
   sortBy: 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' = 'price-asc';
 
   constructor(
-    private productService: ProductService,
+    private shopService: ShopService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -53,7 +53,7 @@ export class Shop implements OnInit {
     this.isLoading = true;
     console.log('Shop page: Starting to load products...');
     // Load all data from JSON
-    this.productService.getProductData().subscribe({
+    this.shopService.getProductData().subscribe({
       next: (data) => {
         console.log('Shop page: Product data loaded', data);
         this.productData = data;
@@ -133,14 +133,14 @@ export class Shop implements OnInit {
     }
 
     // Sort the filtered products
-    const sorted = this.productService.sortProducts(filtered, this.sortBy);
+    const sorted = this.shopService.sortProducts(filtered, this.sortBy);
     
     // Calculate pagination
     this.totalResults = sorted.length;
-    this.totalPages = this.productService.getTotalPages(sorted.length, this.itemsPerPage);
+    this.totalPages = this.shopService.getTotalPages(sorted.length, this.itemsPerPage);
     
     // Apply pagination
-    this.displayedProducts = this.productService.paginateProducts(
+    this.displayedProducts = this.shopService.paginateProducts(
       sorted,
       this.currentPage,
       this.itemsPerPage
@@ -274,7 +274,7 @@ export class Shop implements OnInit {
   // Add to cart
   addToCart(product: Product, event: Event) {
     event.preventDefault();
-    this.productService.addToCart(product);
+    this.shopService.addToCart(product);
     alert(`${product.name} added to cart!`);
   }
 

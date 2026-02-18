@@ -228,36 +228,37 @@
                                  [style.min-height]="'350px'">
                                 <span *ngIf="product.sale" class="label">Sale</span>
                                 <ul class="product__hover">
-                                    <li><a href="#"><img src="/assets/theme/img/icon/heart.png" alt=""></a></li>
-                                    <li><a href="#"><img src="/assets/theme/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                    <li><a href="#"><img src="/assets/theme/img/icon/search.png" alt=""></a></li>
+                                    <!-- <li><a href="#"><i class="icon_heart_alt"></i></a></li>
+                                    <li><a href="#"><i class="icon_refresh"></i> <span>Compare</span></a></li> -->
+                                    <!-- <li><a href="#"><i class="icon_search"></i></a></li> -->
+                                    <li><a [routerLink]="['/shop-details', product.uuid]"><i class="icon_info_alt"></i> <span>Detail</span></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">
                                 <h6>
-                                    <a [routerLink]="['/shop-details', product.id]">{{ product.name }}</a>
+                                    <a [routerLink]="['/shop-details', product.uuid]">{{ product.name }}</a>
                                 </h6>
-                                <a (click)="addToCart(product, $event)" class="add-cart" style="cursor: pointer;">+ Add To Cart</a>
-                                <div class="rating">
+                                <!-- <a (click)="addToCart(product, $event)" class="add-cart" style="cursor: pointer;">+ Add To Cart</a> -->
+                                <!-- <div class="rating">
                                     <i *ngFor="let star of getStarArray(product.rating)" 
                                        class="fa"
                                        [ngClass]="star <= product.rating ? 'fa-star' : 'fa-star-o'">
                                     </i>
-                                </div>
+                                </div> -->
                                 <h5>
                                     ${{ product.price.toFixed(2) }}
                                     <span *ngIf="product.sale" style="text-decoration: line-through; color: #999; margin-left: 10px;">
                                         ${{ product.originalPrice.toFixed(2) }}
                                     </span>
                                 </h5>
-                                <div class="product__color__select">
+                                <!-- <div class="product__color__select">
                                     <label *ngFor="let colorId of product.colors.slice(0, 3); let i = index" 
                                            [class]="getColorById(colorId)?.class || ''"
                                            [class.active]="i === 0"
                                            [for]="'pc-' + product.id + '-' + i">
                                         <input type="radio" [id]="'pc-' + product.id + '-' + i" [name]="'color-' + product.id">
                                     </label>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
