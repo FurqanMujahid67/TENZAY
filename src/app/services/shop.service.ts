@@ -1,21 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, map, shareReplay } from 'rxjs';
+import { Observable, BehaviorSubject, map, shareReplay, catchError, retry, throwError } from 'rxjs';
 import { ProductData, Product, ProductFilters, SortOption } from '../models/shop.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopService {
-  private readonly API_URL = 'assets/json/shop.json';
+  private readonly API_URL = '/assets/json/shop.json';
+  private readonly API_URL_FALLBACK = 'assets/json/shop.json';
   private productData$: Observable<ProductData>;
   private cartSubject = new BehaviorSubject<Product[]>([]);
   private wishlistSubject = new BehaviorSubject<Product[]>([]);
 
   constructor(private http: HttpClient) {
     // Cache the product data to avoid multiple HTTP requests
-    this.productData$ = this.http.get<ProductData>(this.API_URL).pipe(
-      shareReplay(1)
+    this.productData$ = this.createProductDataStream();
+  }
+
+  private createProductDataStream(): Observable<ProductData> {
+    console.log('ShopService: Creating new product data stream');
+    return this.http.get<ProductData>(this.API_URL).pipe(
+      retry({ count: 2, delay: 500 }),
+      catchError((primaryError) => {
+        console.warn('ShopService: Primary URL failed, trying fallback', primaryError);
+        return this.http.get<ProductData>(this.API_URL_FALLBACK).pipe(
+          retry({ count: 1, delay: 500 }),
+          catchError((fallbackError) => {
+            console.error('ShopService: Both URLs failed', fallbackError);
+            return throwError(() => fallbackError);
+          })
+        );
+      }),
+      shareReplay(1),
+      catchError((error) => {
+        console.error('ShopService: Stream error, resetting cache', error);
+        // Reset the cached stream for next request
+        this.productData$ = this.createProductDataStream();
+        return throwError(() => error);
+      })
     );
   }
 
