@@ -1,0 +1,141 @@
+<app-header></app-header>
+
+<section class="private-json spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="private-json__header">
+          <div>
+            <h3>Private JSON Manager</h3>
+            <p class="private-json__note">
+              This page edits a local copy in memory. Use Download or Copy to save changes.
+            </p>
+          </div>
+          <div class="private-json__actions">
+            <button class="btn primary" (click)="addProduct()">Add Product</button>
+            <button class="btn" (click)="exportJson()">Download JSON</button>
+            <button class="btn" (click)="copyJson()">Copy JSON</button>
+            <button class="btn" (click)="toggleRaw()">
+              {{ showRaw ? 'Hide Raw' : 'Show Raw' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="isLoading">
+      <div class="col-lg-12">
+        <div class="private-json__status">Loading data...</div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!isLoading && loadError">
+      <div class="col-lg-12">
+        <div class="private-json__status private-json__status--error">
+          {{ loadError }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!isLoading && !loadError">
+      <div class="col-lg-12">
+        <div class="private-json__table-wrap">
+          <table class="private-json__table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>UUID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Thumbnail</th>
+                <th>Categories</th>
+                <th>Brand</th>
+                <th>Tags</th>
+                <th>Images</th>
+                <th>Sale</th>
+                <th>New</th>
+                <th>Hot</th>
+                <th>Best</th>
+                <th>Related</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products; let i = index">
+                <td>
+                  <input type="number" [(ngModel)]="product.id" />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="product.uuid" />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="product.name" />
+                </td>
+                <td>
+                  <input type="number" step="0.01" [(ngModel)]="product.price" />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="product.thumbnail" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [ngModel]="getArrayField(product, 'categoryId')"
+                    (ngModelChange)="updateArrayField(product, 'categoryId', $event)"
+                  />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="product.brand" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [ngModel]="getArrayField(product, 'tags')"
+                    (ngModelChange)="updateArrayField(product, 'tags', $event)"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [ngModel]="getArrayField(product, 'images')"
+                    (ngModelChange)="updateArrayField(product, 'images', $event)"
+                  />
+                </td>
+                <td>
+                  <input type="checkbox" [(ngModel)]="product.sale" />
+                </td>
+                <td>
+                  <input type="checkbox" [(ngModel)]="product.newArrival" />
+                </td>
+                <td>
+                  <input type="checkbox" [(ngModel)]="product.hotSale" />
+                </td>
+                <td>
+                  <input type="checkbox" [(ngModel)]="product.bestSeller" />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    [ngModel]="getRelatedField(product)"
+                    (ngModelChange)="updateArrayField(product, 'relatedProducts', $event)"
+                  />
+                </td>
+                <td>
+                  <button class="btn btn-small" (click)="removeProduct(i)">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="showRaw && data">
+      <div class="col-lg-12">
+        <textarea class="private-json__raw" readonly>{{ data | json }}</textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

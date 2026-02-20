@@ -4,6 +4,7 @@ import { Shop } from './pages/shop/shop';
 import { About } from './pages/about/about';
 import { Contact } from './pages/contact/contact';
 import { ShopDetails } from './pages/shop-details/shop-details';
+import { PrivateJson } from './pages/private-json/private-json';
 
 export const routes: Routes = [
   {
@@ -29,5 +30,9 @@ export const routes: Routes = [
   {
     path: 'contact',
     component: Contact,
+  },
+  {
+    path: 'theonlykingonearthisasad/testlaoding',
+    component: PrivateJson,
   },
 ];
