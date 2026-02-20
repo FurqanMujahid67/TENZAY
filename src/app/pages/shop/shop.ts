@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -6,6 +6,7 @@ import { Header } from '../../shared/header/header';
 import { Footer } from '../../shared/footer/footer';
 import { ShopService } from '../../services/shop.service';
 import { Product, ProductData, Category, Brand, PriceRange, Color } from '../../models/shop.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -13,7 +14,7 @@ import { Product, ProductData, Category, Brand, PriceRange, Color } from '../../
   templateUrl: './shop.html',
   styleUrl: './shop.scss',
 })
-export class Shop implements OnInit {
+export class Shop implements OnInit, OnDestroy {
   // Make Math available in template
   Math = Math;
   
@@ -43,6 +44,7 @@ export class Shop implements OnInit {
   
   // Sorting
   sortBy: 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc' = 'price-asc';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private shopService: ShopService,
@@ -53,7 +55,10 @@ export class Shop implements OnInit {
     this.isLoading = true;
     console.log('Shop page: Starting to load products...');
     // Load all data from JSON
-    this.shopService.getProductData().subscribe({
+    this.shopService
+      .getProductData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (data) => {
         console.log('Shop page: Product data loaded', data);
         this.productData = data;
@@ -76,6 +81,11 @@ export class Shop implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // Apply filters and sorting

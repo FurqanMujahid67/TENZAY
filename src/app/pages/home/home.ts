@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Header } from '../../shared/header/header';
 import { Footer } from '../../shared/footer/footer';
 import { ShopService } from '../../services/shop.service';
 import { Product } from '../../models/shop.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { Product } from '../../models/shop.model';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
   // All theme initialization is handled by the Header component
   isLoading = true;
   private hasRetriedLoad = false;
@@ -20,6 +21,10 @@ export class Home implements OnInit {
   topBestSellers: Product[] = [];
   topHotSales: Product[] = [];
   topBlogProducts: Product[] = [];
+  private destroy$ = new Subject<void>();
+  private maxLoadingTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private retryTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private isComponentDestroyed = false;
 
   constructor(
     private shopService: ShopService,
@@ -34,7 +39,10 @@ export class Home implements OnInit {
   ngOnInit() {
     this.loadTopProducts();
     // Set a maximum loading timeout as fallback
-    setTimeout(() => {
+    this.maxLoadingTimeoutId = setTimeout(() => {
+      if (this.isComponentDestroyed) {
+        return;
+      }
       if (this.isLoading) {
         console.warn('Home: Maximum loading time exceeded, forcing load complete');
         this.isLoading = false;
@@ -42,11 +50,30 @@ export class Home implements OnInit {
     }, 5000);
   }
 
+  ngOnDestroy() {
+    this.isComponentDestroyed = true;
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    if (this.maxLoadingTimeoutId) {
+      clearTimeout(this.maxLoadingTimeoutId);
+      this.maxLoadingTimeoutId = null;
+    }
+
+    if (this.retryTimeoutId) {
+      clearTimeout(this.retryTimeoutId);
+      this.retryTimeoutId = null;
+    }
+  }
+
   private loadTopProducts() {
     console.log('Home: Starting product data load');
     this.isLoading = true;
     
-    this.shopService.getProductData().subscribe({
+    this.shopService
+      .getProductData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (data) => {
         console.log('Home: Product data loaded successfully', data.products?.length);
         if (data?.products && data.products.length > 0) {
@@ -88,7 +115,11 @@ export class Home implements OnInit {
         if (!this.hasRetriedLoad) {
           this.hasRetriedLoad = true;
           console.log('Home: Retrying product load in 600ms');
-          setTimeout(() => this.loadTopProducts(), 600);
+          this.retryTimeoutId = setTimeout(() => {
+            if (!this.isComponentDestroyed) {
+              this.loadTopProducts();
+            }
+          }, 600);
           return;
         }
 

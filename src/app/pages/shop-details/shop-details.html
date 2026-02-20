@@ -196,7 +196,7 @@
 <!-- Shop Details Section End -->
 
 <!-- Related Section Begin -->
-<section class="related spad" *ngIf="relatedProducts && relatedProducts.length > 0">
+<section class="related spad" *ngIf="!isLoading && relatedProducts && relatedProducts.length > 0">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -206,7 +206,7 @@
         <div class="row">
             <div *ngFor="let relatedProduct of relatedProducts" class="col-lg-3 col-md-6 col-sm-6">
                 <div class="product__item" [class.sale]="relatedProduct.sale">
-                    <div class="product__item__pic set-bg" 
+                    <div class="product__item__pic" 
                          [style.background-image]="'url(' + relatedProduct.thumbnail + ')'"
                          [style.background-size]="'cover'"
                          [style.background-position]="'center center'"

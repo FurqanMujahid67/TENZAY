@@ -32,6 +32,7 @@ export class ShopService {
           })
         );
       }),
+      map((data) => this.normalizeProductData(data)),
       shareReplay(1),
       catchError((error) => {
         console.error('ShopService: Stream error, resetting cache', error);
@@ -336,6 +337,31 @@ export class ShopService {
 
   clearCart(): void {
     this.cartSubject.next([]);
+  }
+  private normalizeAssetPath(path: string | undefined | null): string {
+    if (!path) {
+      return 'assets/theme/img/product/product-1.jpg';
+    }
+    if (/^https?:\/\//i.test(path)) {
+      return path;
+    }
+    return path.replace(/^\/+/, '');
+  }
+
+  private normalizeProduct(product: Product): Product {
+    return {
+      ...product,
+      thumbnail: this.normalizeAssetPath(product.thumbnail),
+      images: product.images?.map((img) => this.normalizeAssetPath(img)) ?? [],
+      thumbnails: product.thumbnails?.map((img) => this.normalizeAssetPath(img)),
+    };
+  }
+
+  private normalizeProductData(data: ProductData): ProductData {
+    return {
+      ...data,
+      products: data.products.map((p) => this.normalizeProduct(p)),
+    };
   }
 
   /**

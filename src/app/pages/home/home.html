@@ -286,19 +286,19 @@
         <div class="row">
             <div *ngFor="let product of topBlogProducts" class="col-lg-4 col-md-6 col-sm-6">
                 <div class="blog__item">
-                    <div class="product__item__pic" 
+                    <div class="blog__item__pic" 
                          [style.background-image]="'url(' + product.thumbnail + ')'"
                          [style.background-size]="'cover'"
                          [style.background-position]="'center center'"
                          [style.background-repeat]="'no-repeat'"
-                         [style.min-height]="'270px'">
+                         [style.min-height]="'310px'"
+                         [style.border-radius]="'8px 8px 0 0'">
                     </div>
-                    <div class="blog__item__text">
-                        <!-- <span class="icon_calendar"></span> -->
+                    <div class="blog__item__text" [style.margin-top]="'0px'">
                         <a [routerLink]="['/shop-details', product.uuid]">
                             <h5>{{ product.name }}</h5>
                         </a>
-                        <p>{{ product.shortDescription }}</p>
+                        <p [style.margin]="'12px 0 15px 0'" [style.color]="'#7d7d7d'" [style.font-size]="'14px'">{{ product.shortDescription }}</p>
                         <a [routerLink]="['/shop-details', product.uuid]" class="blog__btn">Read More <span class="arrow_right"></span></a>
                     </div>
                 </div>
