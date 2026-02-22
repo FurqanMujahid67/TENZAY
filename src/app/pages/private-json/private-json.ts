@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Header } from '../../shared/header/header';
 import { Footer } from '../../shared/footer/footer';
 import { ShopService } from '../../services/shop.service';
-import { Product, ProductData } from '../../models/shop.model';
+import { Brand, Category, Color, PriceRange, Product, ProductData } from '../../models/shop.model';
 
 @Component({
   selector: 'app-private-json',
@@ -18,7 +18,17 @@ export class PrivateJson implements OnInit, OnDestroy {
   loadError = '';
   data: ProductData | null = null;
   products: Product[] = [];
+  categories: Category[] = [];
+  brands: Brand[] = [];
+  sizes: string[] = [];
+  colors: Color[] = [];
+  tags: string[] = [];
+  priceRanges: PriceRange[] = [];
   showRaw = false;
+  expandedProductId: number | null = null;
+  searchTerm = '';
+  saveMessage = '';
+  private readonly STORAGE_KEY = 'private-json-draft';
   private destroy$ = new Subject<void>();
 
   constructor(private shopService: ShopService) {}
@@ -29,8 +39,16 @@ export class PrivateJson implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.data = this.cloneData(data);
+          const draft = this.loadDraft();
+          this.data = draft ?? this.cloneData(data);
           this.products = this.data.products;
+          this.categories = this.data.categories;
+          this.brands = this.data.brands;
+          this.sizes = this.data.sizes;
+          this.colors = this.data.colors;
+          this.tags = this.data.tags;
+          this.priceRanges = this.data.priceRanges;
+          this.products.forEach((product) => this.ensureProductDefaults(product));
           this.isLoading = false;
         },
         error: (error) => {
@@ -49,7 +67,60 @@ export class PrivateJson implements OnInit, OnDestroy {
     this.showRaw = !this.showRaw;
   }
 
+  toggleProduct(product: Product): void {
+    if (this.expandedProductId === product.id) {
+      this.expandedProductId = null;
+      return;
+    }
+    this.expandedProductId = product.id;
+  }
+
+  isProductExpanded(product: Product): boolean {
+    return this.expandedProductId === product.id;
+  }
+
+  isSelected(list: Array<string | number>, value: string | number): boolean {
+    return list.includes(value);
+  }
+
+  toggleArraySelection(
+    product: Product,
+    field: 'categoryId' | 'tags' | 'colors' | 'sizes',
+    value: string,
+    checked: boolean
+  ): void {
+    const list = product[field];
+    if (checked) {
+      if (!list.includes(value)) {
+        list.push(value);
+      }
+      return;
+    }
+    product[field] = list.filter((item) => item !== value) as Product[typeof field];
+  }
+
+  toggleRelatedProduct(product: Product, value: number, checked: boolean): void {
+    if (checked) {
+      if (!product.relatedProducts.includes(value)) {
+        product.relatedProducts.push(value);
+      }
+      return;
+    }
+    product.relatedProducts = product.relatedProducts.filter((item) => item !== value);
+  }
+
+  getFilteredProducts(): Product[] {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      return this.products;
+    }
+    return this.products.filter((product) => this.matchesProduct(product, term));
+  }
+
   addProduct(): void {
+    if (!this.data) {
+      return;
+    }
     const nextId = this.getNextId();
     const product: Product = {
       id: nextId,
@@ -66,8 +137,9 @@ export class PrivateJson implements OnInit, OnDestroy {
       brand: 'gucci',
       categoryId: ['clothing'],
       tags: ['Product'],
-      images: ['assets/theme/img/product/product-1.jpg'],
-      thumbnail: 'assets/theme/img/product/product-1.jpg',
+      images: [],
+      thumbnail: '',
+      thumbnails: [],
       colors: ['color-1'],
       sizes: ['m'],
       rating: 0,
@@ -79,21 +151,92 @@ export class PrivateJson implements OnInit, OnDestroy {
       bestSeller: false,
       material: '',
       additionalInfo: '',
+      videoUrl: '',
+      detailedDescription: {
+        productsInfo: '',
+        materialUsed: '',
+      },
       relatedProducts: [],
     };
 
-    this.products = [...this.products, product];
-    this.syncProducts();
+    this.products.unshift(product);
+    this.searchTerm = '';
+    this.expandedProductId = product.id;
   }
 
   removeProduct(index: number): void {
-    this.products = this.products.filter((_, i) => i !== index);
-    this.syncProducts();
+    if (!this.data) {
+      return;
+    }
+    this.products.splice(index, 1);
+  }
+
+  addImage(product: Product): void {
+    product.images.push('');
+  }
+
+  removeImage(product: Product, index: number): void {
+    product.images.splice(index, 1);
+  }
+
+  addThumbnail(product: Product): void {
+    if (!product.thumbnails) {
+      product.thumbnails = [];
+    }
+    product.thumbnails.push('');
+  }
+
+  removeThumbnail(product: Product, index: number): void {
+    product.thumbnails?.splice(index, 1);
+  }
+
+  onThumbnailUpload(product: Product, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const file = input.files[0];
+    this.convertToBase64(file, (dataUrl) => {
+      product.thumbnail = dataUrl;
+    });
+  }
+
+  onImageUpload(product: Product, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const file = input.files[0];
+    this.convertToBase64(file, (dataUrl) => {
+      product.images[index] = dataUrl;
+    });
+  }
+
+  onThumbnailsUpload(product: Product, index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const file = input.files[0];
+    this.convertToBase64(file, (dataUrl) => {
+      if (!product.thumbnails) {
+        product.thumbnails = [];
+      }
+      product.thumbnails[index] = dataUrl;
+    });
+  }
+
+  private convertToBase64(file: File, callback: (dataUrl: string) => void): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      callback(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   }
 
   updateArrayField(
     product: Product,
-    field: 'categoryId' | 'tags' | 'images' | 'colors' | 'sizes' | 'relatedProducts',
+    field: 'categoryId' | 'tags' | 'images' | 'thumbnails' | 'colors' | 'sizes' | 'relatedProducts',
     value: string
   ): void {
     if (field === 'relatedProducts') {
@@ -109,11 +252,19 @@ export class PrivateJson implements OnInit, OnDestroy {
       .map((item) => item.trim())
       .filter((item) => item.length > 0);
 
-    product[field] = list as Product[typeof field];
+    if (field === 'thumbnails') {
+      product.thumbnails = list;
+      return;
+    }
+
+    product[field] = list as Product[Exclude<typeof field, 'thumbnails'>];
   }
 
-  getArrayField(product: Product, field: 'categoryId' | 'tags' | 'images' | 'colors' | 'sizes'): string {
-    return product[field].join(', ');
+  getArrayField(
+    product: Product,
+    field: 'categoryId' | 'tags' | 'images' | 'thumbnails' | 'colors' | 'sizes'
+  ): string {
+    return (product[field] ?? []).join(', ');
   }
 
   getRelatedField(product: Product): string {
@@ -124,14 +275,17 @@ export class PrivateJson implements OnInit, OnDestroy {
     if (!this.data) {
       return;
     }
+    
     const content = JSON.stringify(this.data, null, 2);
     const blob = new Blob([content], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = 'shop.json';
+    document.body.appendChild(link);
     link.click();
-    URL.revokeObjectURL(url);
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
   }
 
   copyJson(): void {
@@ -142,14 +296,131 @@ export class PrivateJson implements OnInit, OnDestroy {
     void navigator.clipboard?.writeText(content);
   }
 
-  private syncProducts(): void {
+  saveJson(): void {
     if (!this.data) {
       return;
     }
-    this.data = {
-      ...this.data,
-      products: [...this.products],
-    };
+    if (typeof localStorage === 'undefined') {
+      this.saveMessage = 'LocalStorage not available. Use Download to export.';
+      return;
+    }
+    const content = JSON.stringify(this.data);
+    localStorage.setItem(this.STORAGE_KEY, content);
+    this.saveMessage = 'Saved locally. Use Download to export a file.';
+  }
+
+  private loadDraft(): ProductData | null {
+    if (typeof localStorage === 'undefined') {
+      return null;
+    }
+    const content = localStorage.getItem(this.STORAGE_KEY);
+    if (!content) {
+      return null;
+    }
+    try {
+      return JSON.parse(content) as ProductData;
+    } catch (error) {
+      console.warn('Invalid saved draft', error);
+      return null;
+    }
+  }
+
+  addCategory(): void {
+    if (!this.data) {
+      return;
+    }
+    this.categories.unshift({ id: 'new-category', name: 'New Category', count: 0 });
+  }
+
+  removeCategory(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.categories.splice(index, 1);
+  }
+
+  addBrand(): void {
+    if (!this.data) {
+      return;
+    }
+    this.brands.unshift({ id: 'new-brand', name: 'New Brand' });
+  }
+
+  removeBrand(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.brands.splice(index, 1);
+  }
+
+  addColor(): void {
+    if (!this.data) {
+      return;
+    }
+    this.colors.unshift({ id: 'color-new', name: 'New Color', class: 'c-new', hex: '#000000' });
+  }
+
+  removeColor(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.colors.splice(index, 1);
+  }
+
+  addPriceRange(): void {
+    if (!this.data) {
+      return;
+    }
+    this.priceRanges.unshift({ id: 'range-new', label: '$0.00 - $0.00', min: 0, max: 0 });
+  }
+
+  removePriceRange(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.priceRanges.splice(index, 1);
+  }
+
+  addTag(): void {
+    if (!this.data) {
+      return;
+    }
+    this.tags.unshift('New Tag');
+  }
+
+  removeTag(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.tags.splice(index, 1);
+  }
+
+  addSize(): void {
+    if (!this.data) {
+      return;
+    }
+    this.sizes.unshift('new-size');
+  }
+
+  removeSize(index: number): void {
+    if (!this.data) {
+      return;
+    }
+    this.sizes.splice(index, 1);
+  }
+
+  updateDetailedDescription(
+    product: Product,
+    field: 'productsInfo' | 'materialUsed',
+    value: string
+  ): void {
+    if (!product.detailedDescription) {
+      product.detailedDescription = {
+        productsInfo: '',
+        materialUsed: '',
+      };
+    }
+    product.detailedDescription[field] = value;
   }
 
   private getNextId(): number {
@@ -161,6 +432,63 @@ export class PrivateJson implements OnInit, OnDestroy {
 
   private cloneData(data: ProductData): ProductData {
     return JSON.parse(JSON.stringify(data)) as ProductData;
+  }
+
+  private ensureProductDefaults(product: Product): void {
+    product.images = product.images ?? [];
+    product.thumbnails = product.thumbnails ?? [];
+    product.categoryId = product.categoryId ?? [];
+    product.tags = product.tags ?? [];
+    product.colors = product.colors ?? [];
+    product.sizes = product.sizes ?? [];
+    product.relatedProducts = product.relatedProducts ?? [];
+    product.description = product.description ?? '';
+    product.shortDescription = product.shortDescription ?? '';
+    product.material = product.material ?? '';
+    product.additionalInfo = product.additionalInfo ?? '';
+    product.videoUrl = product.videoUrl ?? '';
+    product.slug = product.slug ?? '';
+    product.sku = product.sku ?? '';
+    product.uuid = product.uuid ?? '';
+    product.thumbnail = product.thumbnail ?? '';
+    product.detailedDescription = product.detailedDescription ?? {
+      productsInfo: '',
+      materialUsed: '',
+    };
+  }
+
+  private matchesProduct(product: Product, term: string): boolean {
+    const brandName = this.brands.find((brand) => brand.id === product.brand)?.name ?? '';
+    const categoryNames = product.categoryId
+      .map((categoryId) => this.categories.find((cat) => cat.id === categoryId)?.name ?? '')
+      .join(' ');
+
+    const haystack = [
+      product.name,
+      product.slug,
+      product.sku,
+      product.uuid,
+      product.brand,
+      brandName,
+      product.shortDescription,
+      product.description,
+      product.material,
+      product.additionalInfo,
+      product.videoUrl ?? '',
+      product.tags.join(' '),
+      product.categoryId.join(' '),
+      categoryNames,
+      product.colors.join(' '),
+      product.sizes.join(' '),
+      product.relatedProducts.join(' '),
+      String(product.price),
+      String(product.originalPrice),
+    ]
+      .filter((value) => value && value.length > 0)
+      .join(' ')
+      .toLowerCase();
+
+    return haystack.includes(term);
   }
 
   private generateUuid(): string {

@@ -10,9 +10,12 @@
             <p class="private-json__note">
               This page edits a local copy in memory. Use Download or Copy to save changes.
             </p>
+            <p class="private-json__note" *ngIf="saveMessage">
+              {{ saveMessage }}
+            </p>
           </div>
           <div class="private-json__actions">
-            <button class="btn primary" (click)="addProduct()">Add Product</button>
+            <button class="btn primary" (click)="saveJson()">Save</button>
             <button class="btn" (click)="exportJson()">Download JSON</button>
             <button class="btn" (click)="copyJson()">Copy JSON</button>
             <button class="btn" (click)="toggleRaw()">
@@ -39,93 +42,492 @@
 
     <div class="row" *ngIf="!isLoading && !loadError">
       <div class="col-lg-12">
-        <div class="private-json__table-wrap">
-          <table class="private-json__table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>UUID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Thumbnail</th>
-                <th>Categories</th>
-                <th>Brand</th>
-                <th>Tags</th>
-                <th>Images</th>
-                <th>Sale</th>
-                <th>New</th>
-                <th>Hot</th>
-                <th>Best</th>
-                <th>Related</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of products; let i = index">
-                <td>
-                  <input type="number" [(ngModel)]="product.id" />
-                </td>
-                <td>
-                  <input type="text" [(ngModel)]="product.uuid" />
-                </td>
-                <td>
-                  <input type="text" [(ngModel)]="product.name" />
-                </td>
-                <td>
-                  <input type="number" step="0.01" [(ngModel)]="product.price" />
-                </td>
-                <td>
-                  <input type="text" [(ngModel)]="product.thumbnail" />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="getArrayField(product, 'categoryId')"
-                    (ngModelChange)="updateArrayField(product, 'categoryId', $event)"
-                  />
-                </td>
-                <td>
-                  <input type="text" [(ngModel)]="product.brand" />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="getArrayField(product, 'tags')"
-                    (ngModelChange)="updateArrayField(product, 'tags', $event)"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="getArrayField(product, 'images')"
-                    (ngModelChange)="updateArrayField(product, 'images', $event)"
-                  />
-                </td>
-                <td>
-                  <input type="checkbox" [(ngModel)]="product.sale" />
-                </td>
-                <td>
-                  <input type="checkbox" [(ngModel)]="product.newArrival" />
-                </td>
-                <td>
-                  <input type="checkbox" [(ngModel)]="product.hotSale" />
-                </td>
-                <td>
-                  <input type="checkbox" [(ngModel)]="product.bestSeller" />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="getRelatedField(product)"
-                    (ngModelChange)="updateArrayField(product, 'relatedProducts', $event)"
-                  />
-                </td>
-                <td>
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Categories</h4>
+            <button class="btn btn-small" (click)="addCategory()">Add Category</button>
+          </div>
+          <div class="private-json__table-wrap">
+            <table class="private-json__table private-json__table--compact">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Count</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of categories; let i = index">
+                  <td><input type="text" [(ngModel)]="category.id" /></td>
+                  <td><input type="text" [(ngModel)]="category.name" /></td>
+                  <td><input type="number" [(ngModel)]="category.count" /></td>
+                  <td><button class="btn btn-small" (click)="removeCategory(i)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Brands</h4>
+            <button class="btn btn-small" (click)="addBrand()">Add Brand</button>
+          </div>
+          <div class="private-json__table-wrap">
+            <table class="private-json__table private-json__table--compact">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let brand of brands; let i = index">
+                  <td><input type="text" [(ngModel)]="brand.id" /></td>
+                  <td><input type="text" [(ngModel)]="brand.name" /></td>
+                  <td><button class="btn btn-small" (click)="removeBrand(i)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Colors</h4>
+            <button class="btn btn-small" (click)="addColor()">Add Color</button>
+          </div>
+          <div class="private-json__table-wrap">
+            <table class="private-json__table private-json__table--compact">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Class</th>
+                  <th>Hex</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let color of colors; let i = index">
+                  <td><input type="text" [(ngModel)]="color.id" /></td>
+                  <td><input type="text" [(ngModel)]="color.name" /></td>
+                  <td><input type="text" [(ngModel)]="color.class" /></td>
+                  <td><input type="text" [(ngModel)]="color.hex" /></td>
+                  <td><button class="btn btn-small" (click)="removeColor(i)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Sizes</h4>
+            <button class="btn btn-small" (click)="addSize()">Add Size</button>
+          </div>
+          <div class="private-json__simple-list">
+            <div class="private-json__simple-item" *ngFor="let size of sizes; let i = index">
+              <input type="text" [(ngModel)]="sizes[i]" />
+              <button class="btn btn-small" (click)="removeSize(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Tags</h4>
+            <button class="btn btn-small" (click)="addTag()">Add Tag</button>
+          </div>
+          <div class="private-json__simple-list">
+            <div class="private-json__simple-item" *ngFor="let tag of tags; let i = index">
+              <input type="text" [(ngModel)]="tags[i]" />
+              <button class="btn btn-small" (click)="removeTag(i)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Price Ranges</h4>
+            <button class="btn btn-small" (click)="addPriceRange()">Add Range</button>
+          </div>
+          <div class="private-json__table-wrap">
+            <table class="private-json__table private-json__table--compact">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Label</th>
+                  <th>Min</th>
+                  <th>Max</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let range of priceRanges; let i = index">
+                  <td><input type="text" [(ngModel)]="range.id" /></td>
+                  <td><input type="text" [(ngModel)]="range.label" /></td>
+                  <td><input type="number" [(ngModel)]="range.min" /></td>
+                  <td><input type="number" [(ngModel)]="range.max" /></td>
+                  <td><button class="btn btn-small" (click)="removePriceRange(i)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="private-json__section">
+          <div class="private-json__section-header">
+            <h4>Products</h4>
+            <div class="private-json__section-actions">
+              <input
+                class="private-json__search"
+                type="text"
+                [(ngModel)]="searchTerm"
+                placeholder="Search by name, category, brand, tag, size, color..."
+              />
+              <button class="btn" (click)="saveJson()">Save</button>
+              <button class="btn primary" (click)="addProduct()">Add Product</button>
+            </div>
+          </div>
+          <div class="private-json__products">
+            <div class="private-json__product" *ngFor="let product of getFilteredProducts(); let i = index">
+              <div class="private-json__product-header">
+                <div>
+                  <h5>{{ product.name || 'New Product' }}</h5>
+                  <span class="private-json__muted">
+                    ID: {{ product.id }} | SKU: {{ product.sku }} | Price: {{ product.price }}
+                  </span>
+                </div>
+                <div class="private-json__product-actions">
+                  <button class="btn btn-small" (click)="toggleProduct(product)">
+                    {{ isProductExpanded(product) ? 'Collapse' : 'Edit' }}
+                  </button>
                   <button class="btn btn-small" (click)="removeProduct(i)">Remove</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+              </div>
+
+              <div class="private-json__product-summary" *ngIf="!isProductExpanded(product)">
+                <div>
+                  <strong>Brand:</strong> {{ product.brand }}
+                </div>
+                <div>
+                  <strong>Categories:</strong> {{ getArrayField(product, 'categoryId') || 'None' }}
+                </div>
+                <div>
+                  <strong>Sizes:</strong> {{ getArrayField(product, 'sizes') || 'None' }}
+                </div>
+                <div>
+                  <strong>Tags:</strong> {{ getArrayField(product, 'tags') || 'None' }}
+                </div>
+              </div>
+
+              <div class="private-json__product-details" *ngIf="isProductExpanded(product)">
+                <div class="private-json__product-grid">
+                  <label>
+                    ID
+                    <input type="number" [(ngModel)]="product.id" [disabled]="true" [readOnly]="true" />
+                  </label>
+                  <label>
+                    UUID
+                    <input type="text" [(ngModel)]="product.uuid" [disabled]="true" [readOnly]="true" />
+                  </label>
+                  <label>
+                    SKU
+                    <input type="text" [(ngModel)]="product.sku" />
+                  </label>
+                  <label>
+                    Name
+                    <input type="text" [(ngModel)]="product.name" />
+                  </label>
+                  <label>
+                    Slug
+                    <input type="text" [(ngModel)]="product.slug" />
+                  </label>
+                  <label>
+                    Brand
+                    <input type="text" [(ngModel)]="product.brand" />
+                  </label>
+                  <label>
+                    Price
+                    <input type="number" step="0.01" [(ngModel)]="product.price" />
+                  </label>
+                  <label>
+                    Original Price
+                    <input type="number" step="0.01" [(ngModel)]="product.originalPrice" />
+                  </label>
+                  <label>
+                    Sale Percentage
+                    <input type="number" step="1" [(ngModel)]="product.salePercentage" />
+                  </label>
+                  <label>
+                    Rating
+                    <input type="number" step="0.1" [(ngModel)]="product.rating" />
+                  </label>
+                  <label>
+                    Review Count
+                    <input type="number" [(ngModel)]="product.reviewCount" />
+                  </label>
+                  <label>
+                    Stock
+                    <input type="number" [(ngModel)]="product.stock" />
+                  </label>
+                </div>
+
+                <div class="private-json__product-media">
+                  <h6>Media</h6>
+                  <div class="private-json__product-grid">
+                    <label>
+                      Main Thumbnail (single)
+                      <div class="private-json__upload">
+                        <div class="private-json__upload-preview" *ngIf="product.thumbnail">
+                          <img [src]="product.thumbnail" alt="Thumbnail preview" />
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          (change)="onThumbnailUpload(product, $event)"
+                          class="private-json__file-input"
+                        />
+                        <input
+                          type="text"
+                          [(ngModel)]="product.thumbnail"
+                          placeholder="Or paste URL"
+                          class="private-json__url-input"
+                        />
+                      </div>
+                    </label>
+                  </div>
+
+                  <div class="private-json__product-grid">
+                    <label>
+                      Product Images (multiple)
+                      <div class="private-json__list">
+                        <div class="private-json__list-item" *ngFor="let img of product.images; let idx = index">
+                          <div class="private-json__upload-inline row g-2 align-items-center">
+                            <div class="col-auto" *ngIf="img">
+                              <div class="private-json__upload-preview-small">
+                                <img [src]="img" alt="Image preview" />
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                (change)="onImageUpload(product, idx, $event)"
+                                class="private-json__file-input-small form-control form-control-sm"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <input
+                                type="text"
+                                [(ngModel)]="product.images[idx]"
+                                placeholder="Or paste URL"
+                                class="form-control form-control-sm"
+                              />
+                            </div>
+                            <div class="col-auto">
+                              <button class="btn btn-small" (click)="removeImage(product, idx)">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                        <button class="btn btn-small" (click)="addImage(product)">Add Image</button>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div class="private-json__product-grid">
+                    <label>
+                      Thumbnails (multiple)
+                      <div class="private-json__list">
+                        <div class="private-json__list-item" *ngFor="let img of product.thumbnails || []; let idx = index">
+                          <div class="private-json__upload-inline row g-2 align-items-center">
+                            <div class="col-auto" *ngIf="img">
+                              <div class="private-json__upload-preview-small">
+                                <img [src]="img" alt="Thumbnail preview" />
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                (change)="onThumbnailsUpload(product, idx, $event)"
+                                class="private-json__file-input-small form-control form-control-sm"
+                              />
+                            </div>
+                            <div class="col-12 col-md">
+                              <input
+                                type="text"
+                                [ngModel]="product.thumbnails?.[idx] || ''"
+                                (ngModelChange)="product.thumbnails = product.thumbnails ?? []; product.thumbnails[idx] = $event"
+                                placeholder="Or paste URL"
+                                class="form-control form-control-sm"
+                              />
+                            </div>
+                            <div class="col-auto">
+                              <button class="btn btn-small" (click)="removeThumbnail(product, idx)">Remove</button>
+                            </div>
+                          </div>
+                        </div>
+                        <button class="btn btn-small" (click)="addThumbnail(product)">Add Thumbnail</button>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="private-json__product-grid">
+                  <label>
+                    Categories
+                    <div class="private-json__multi">
+                      <label class="private-json__multi-item" *ngFor="let category of categories">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(product.categoryId, category.id)"
+                          (change)="toggleArraySelection(product, 'categoryId', category.id, $event.target.checked)"
+                        />
+                        <span>{{ category.name }} ({{ category.id }})</span>
+                      </label>
+                    </div>
+                  </label>
+                  <label>
+                    Tags
+                    <div class="private-json__multi">
+                      <label class="private-json__multi-item" *ngFor="let tag of tags">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(product.tags, tag)"
+                          (change)="toggleArraySelection(product, 'tags', tag, $event.target.checked)"
+                        />
+                        <span>{{ tag }}</span>
+                      </label>
+                    </div>
+                  </label>
+                  <label>
+                    Colors
+                    <div class="private-json__multi">
+                      <label class="private-json__multi-item" *ngFor="let color of colors">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(product.colors, color.id)"
+                          (change)="toggleArraySelection(product, 'colors', color.id, $event.target.checked)"
+                        />
+                        <span>{{ color.name }} ({{ color.id }})</span>
+                      </label>
+                    </div>
+                  </label>
+                  <label>
+                    Sizes
+                    <div class="private-json__multi">
+                      <label class="private-json__multi-item" *ngFor="let size of sizes">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(product.sizes, size)"
+                          (change)="toggleArraySelection(product, 'sizes', size, $event.target.checked)"
+                        />
+                        <span>{{ size }}</span>
+                      </label>
+                    </div>
+                  </label>
+                  <label>
+                    Related Products
+                    <div class="private-json__multi">
+                      <label class="private-json__multi-item" *ngFor="let related of products">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelected(product.relatedProducts, related.id)"
+                          (change)="toggleRelatedProduct(product, related.id, $event.target.checked)"
+                        />
+                        <span>{{ related.name }} ({{ related.id }})</span>
+                      </label>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="private-json__product-grid">
+                  <label class="private-json__checkbox">
+                    <span>On Sale</span>
+                    <input type="checkbox" [(ngModel)]="product.sale" />
+                  </label>
+                  <label class="private-json__checkbox">
+                    <span>Featured</span>
+                    <input type="checkbox" [(ngModel)]="product.featured" />
+                  </label>
+                  <label class="private-json__checkbox">
+                    <span>New Arrival</span>
+                    <input type="checkbox" [(ngModel)]="product.newArrival" />
+                  </label>
+                  <label class="private-json__checkbox">
+                    <span>Hot Sale</span>
+                    <input type="checkbox" [(ngModel)]="product.hotSale" />
+                  </label>
+                  <label class="private-json__checkbox">
+                    <span>Best Seller</span>
+                    <input type="checkbox" [(ngModel)]="product.bestSeller" />
+                  </label>
+                </div>
+
+                <div class="private-json__product-grid">
+                  <label>
+                    Short Description
+                    <textarea rows="3" [(ngModel)]="product.shortDescription"></textarea>
+                  </label>
+                  <label>
+                    Description
+                    <textarea rows="4" [(ngModel)]="product.description"></textarea>
+                  </label>
+                  <label>
+                    Material
+                    <textarea rows="2" [(ngModel)]="product.material"></textarea>
+                  </label>
+                  <label>
+                    Additional Info
+                    <textarea rows="2" [(ngModel)]="product.additionalInfo"></textarea>
+                  </label>
+                  <label>
+                    Video URL
+                    <input
+                      type="text"
+                      [ngModel]="product.videoUrl || ''"
+                      (ngModelChange)="product.videoUrl = $event"
+                    />
+                  </label>
+                  <label>
+                    Detailed Info
+                    <textarea
+                      rows="3"
+                      [ngModel]="product.detailedDescription?.productsInfo || ''"
+                      (ngModelChange)="updateDetailedDescription(product, 'productsInfo', $event)"
+                    ></textarea>
+                  </label>
+                  <label>
+                    Detailed Material
+                    <textarea
+                      rows="3"
+                      [ngModel]="product.detailedDescription?.materialUsed || ''"
+                      (ngModelChange)="updateDetailedDescription(product, 'materialUsed', $event)"
+                    ></textarea>
+                  </label>
+                </div>
+
+                <div class="private-json__image-preview" *ngIf="product.thumbnail || product.images.length || (product.thumbnails?.length ?? 0)">
+                  <div class="private-json__image-item" *ngIf="product.thumbnail">
+                    <img [src]="product.thumbnail" alt="Thumbnail" />
+                    <span>Thumbnail</span>
+                  </div>
+                  <div class="private-json__image-item" *ngFor="let img of product.images">
+                    <img [src]="img" alt="Product image" />
+                    <span>Image</span>
+                  </div>
+                  <div class="private-json__image-item" *ngFor="let img of product.thumbnails || []">
+                    <img [src]="img" alt="Product thumbnail" />
+                    <span>Thumb</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
