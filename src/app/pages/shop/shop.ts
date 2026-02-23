@@ -53,24 +53,17 @@ export class Shop implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    console.log('Shop page: Starting to load products...');
     // Load all data from JSON
     this.shopService
       .getProductData()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
       next: (data) => {
-        console.log('Shop page: Product data loaded', data);
         this.productData = data;
         this.allProducts = data.products;
-        console.log('Shop page: Total products:', this.allProducts.length);
         this.dataLoaded = true;
         this.applyFiltersAndSort();
         this.isLoading = false;
-        console.log('Shop page: Displayed products:', this.displayedProducts.length);
-        if (this.displayedProducts.length > 0) {
-          console.log('Shop page: First product thumbnail:', this.displayedProducts[0].thumbnail);
-        }
         // Manually trigger change detection to ensure images render
         this.cdr.detectChanges();
       },

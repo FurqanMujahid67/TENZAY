@@ -97,13 +97,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="filter__controls">
-                    <li class="active" data-filter="*">Featured</li>
-                    <li data-filter=".best-sellers">Best Sellers</li>
-                    <li data-filter=".hot-sales">Hot Sales</li>
+                    <li [class.active]="activeFilter === 'all'" (click)="setActiveFilter('all')">Featured</li>
+                    <li [class.active]="activeFilter === 'best-sellers'" (click)="setActiveFilter('best-sellers')">Best Sellers</li>
+                    <li [class.active]="activeFilter === 'hot-sales'" (click)="setActiveFilter('hot-sales')">Hot Sales</li>
                 </ul>
             </div>
         </div>
         <div class="row product__filter" *ngIf="hasTopProducts">
+            <ng-container *ngIf="isFilterVisible('featured')">
             <div *ngFor="let product of topFeatured" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix featured">
                 <div class="product__item" [class.sale]="product.sale">
                     <div class="product__item__pic" 
@@ -130,6 +131,8 @@
                     </div>
                 </div>
             </div>
+            </ng-container>
+            <ng-container *ngIf="isFilterVisible('best-sellers')">
             <div *ngFor="let product of topBestSellers" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix best-sellers">
                 <div class="product__item" [class.sale]="product.sale">
                     <div class="product__item__pic" 
@@ -156,6 +159,8 @@
                     </div>
                 </div>
             </div>
+            </ng-container>
+            <ng-container *ngIf="isFilterVisible('hot-sales')">
             <div *ngFor="let product of topHotSales" class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix hot-sales">
                 <div class="product__item" [class.sale]="product.sale">
                     <div class="product__item__pic" 
@@ -182,6 +187,7 @@
                     </div>
                 </div>
             </div>
+            </ng-container>
         </div>
         <div class="row" *ngIf="isLoading && !hasTopProducts">
             <div class="col-lg-12">

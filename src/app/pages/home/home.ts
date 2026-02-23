@@ -16,6 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class Home implements OnInit, OnDestroy {
   // All theme initialization is handled by the Header component
   isLoading = true;
+  activeFilter: 'all' | 'featured' | 'best-sellers' | 'hot-sales' = 'all';
   private hasRetriedLoad = false;
   topFeatured: Product[] = [];
   topBestSellers: Product[] = [];
@@ -66,8 +67,15 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
+  setActiveFilter(filter: 'all' | 'featured' | 'best-sellers' | 'hot-sales') {
+    this.activeFilter = filter;
+  }
+
+  isFilterVisible(filter: 'featured' | 'best-sellers' | 'hot-sales'): boolean {
+    return this.activeFilter === 'all' || this.activeFilter === filter;
+  }
+
   private loadTopProducts() {
-    console.log('Home: Starting product data load');
     this.isLoading = true;
     
     this.shopService
@@ -75,7 +83,6 @@ export class Home implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
       next: (data) => {
-        console.log('Home: Product data loaded successfully', data.products?.length);
         if (data?.products && data.products.length > 0) {
           this.topFeatured = data.products.filter(p => p.featured).slice(0, 4);
           this.topBestSellers = data.products.filter(p => p.bestSeller).slice(0, 4);
@@ -92,16 +99,9 @@ export class Home implements OnInit, OnDestroy {
 
           this.topBlogProducts = (prioritized.length > 0 ? prioritized : data.products).slice(0, 3);
           this.isLoading = false;
-          console.log('Home: Section counts', {
-            featured: this.topFeatured.length,
-            bestSellers: this.topBestSellers.length,
-            hotSales: this.topHotSales.length,
-            top3: this.topBlogProducts.length
-          });
           this.ngZone.run(() => {
             this.cdr.detectChanges();
           });
-          console.log('Home: Data processing completed, isLoading set to false');
         } else {
           console.warn('Home: No products found in data');
           this.isLoading = false;
@@ -114,7 +114,6 @@ export class Home implements OnInit, OnDestroy {
         console.error('Home: Error loading products:', error);
         if (!this.hasRetriedLoad) {
           this.hasRetriedLoad = true;
-          console.log('Home: Retrying product load in 600ms');
           this.retryTimeoutId = setTimeout(() => {
             if (!this.isComponentDestroyed) {
               this.loadTopProducts();
@@ -123,7 +122,6 @@ export class Home implements OnInit, OnDestroy {
           return;
         }
 
-        console.log('Home: Max retries reached, setting loading to false');
         this.isLoading = false;
         this.ngZone.run(() => {
           this.cdr.detectChanges();

@@ -225,24 +225,24 @@
                             <a [routerLink]="['/shop-details', relatedProduct.uuid]">{{ relatedProduct.name }}</a>
                         </h6>
                         <!-- <a class="add-cart" style="cursor: pointer;">+ Add To Cart</a> -->
-                        <div class="rating">
+                        <!-- <div class="rating">
                             <i *ngFor="let star of getStarArray(relatedProduct.rating)" 
                                class="fa"
                                [ngClass]="star <= relatedProduct.rating ? 'fa-star' : 'fa-star-o'">
                             </i>
-                        </div>
+                        </div> -->
                         <h5>
                             ${{ relatedProduct.price.toFixed(2) }}
                             <span *ngIf="relatedProduct.sale" style="text-decoration: line-through; color: #999; margin-left: 10px;">
                                 ${{ relatedProduct.originalPrice.toFixed(2) }}
                             </span>
                         </h5>
-                        <div class="product__color__select">
+                        <!-- <div class="product__color__select">
                             <label *ngFor="let colorId of relatedProduct.colors.slice(0, 3); let i = index" 
                                    [for]="'rpc-' + relatedProduct.id + '-' + i">
                                 <input type="radio" [id]="'rpc-' + relatedProduct.id + '-' + i" [name]="'rp-color-' + relatedProduct.id">
                             </label>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

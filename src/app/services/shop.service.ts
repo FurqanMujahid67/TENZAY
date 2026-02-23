@@ -19,7 +19,6 @@ export class ShopService {
   }
 
   private createProductDataStream(): Observable<ProductData> {
-    console.log('ShopService: Creating new product data stream');
     return this.http.get<ProductData>(this.API_URL).pipe(
       retry({ count: 2, delay: 500 }),
       catchError((primaryError) => {
