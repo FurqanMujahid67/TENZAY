@@ -50,8 +50,9 @@
                     <h6>NewLetter</h6>
                     <div class="footer__newslatter">
                         <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                        <form action="#">
-                            <input type="text" placeholder="Your email">
+                        <form name="newsletter" method="POST" action="/" data-netlify="true">
+                            <input type="hidden" name="form-name" value="newsletter">
+                            <input type="email" name="email" placeholder="Your email" required>
                             <button type="submit"><span class="icon_mail_alt"></span></button>
                         </form>
                     </div>
