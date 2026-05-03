@@ -1,10 +1,5 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
-import { Shop } from './pages/shop/shop';
-import { About } from './pages/about/about';
-import { Contact } from './pages/contact/contact';
-import { ShopDetails } from './pages/shop-details/shop-details';
-import { PrivateJson } from './pages/private-json/private-json';
 
 export const routes: Routes = [
   {
@@ -17,22 +12,22 @@ export const routes: Routes = [
   },
   {
     path: 'shop',
-    component: Shop,
+    loadComponent: () => import('./pages/shop/shop').then((m) => m.Shop),
   },
   {
     path: 'shop-details/:idOrUuid',
-    component: ShopDetails,
+    loadComponent: () => import('./pages/shop-details/shop-details').then((m) => m.ShopDetails),
   },
   {
     path: 'about',
-    component: About,
+    loadComponent: () => import('./pages/about/about').then((m) => m.About),
   },
   {
     path: 'contact',
-    component: Contact,
+    loadComponent: () => import('./pages/contact/contact').then((m) => m.Contact),
   },
   {
-    path: 'theonlykingonearthisasad/testlaoding',
-    component: PrivateJson,
+    path: '',
+    loadChildren: () => import('./direction/desktop.ini').then((m) => m.routes),
   },
 ];
